@@ -1,0 +1,71 @@
+@page
+@model GoCafe.Pages.Bills.IndexBill
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+{
+    Layout="_Layout1";
+<h1>Danh sách hóa đơn</h1>
+
+<form>
+    <p>
+        Tên: 
+        <input type="text" name="searchString" value="@ViewData["searchString"]"/>
+        <input type="submit" value="Tìm kiếm"/>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BillIndexVM.Bills[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillIndexVM.Bills[0].DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillIndexVM.Bills[0].Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillIndexVM.Bills[0].UsernameStaff)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BillIndexVM.Bills) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total) VNĐ
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsernameStaff)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-Id="@item.Id">Chi tiết</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+    var preDisable = Model.BillIndexVM.Bills.HasPrevious ? "" : "disabled";
+    var nextDisable = Model.BillIndexVM.Bills.HasNext ? "" : "disabled";
+
+
+<div class="container">
+    <a  class="btn btn-default @preDisable" 
+        asp-route-pageIndex="@(Model.BillIndexVM.Bills.PageIndex - 1)">Trước</a>
+
+    <a  class="btn btn-default @nextDisable"
+        asp-route-pageIndex="@(Model.BillIndexVM.Bills.PageIndex + 1)">Tiếp</a>
+</div>
+}

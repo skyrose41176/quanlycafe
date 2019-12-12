@@ -1,0 +1,79 @@
+@page
+@model GoCafe.Pages.Accounts.IndexAccount
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Quản lý nhân viên</h1>
+
+<p>
+    <a asp-page="./Create">Thêm mới</a>
+</p>
+
+<form>
+    <p>
+        Quyền: 
+        <select asp-for="AccountGenre" asp-items="Model.AccountIndexVM.Genres">
+            <option value="">All</option>
+        </select>
+        Tên: 
+        <input type="text" name="searchString" value="@ViewData["searchString"]"/>
+        <input type="submit" value="Tìm kiếm"/>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountIndexVM.Accounts[0].Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountIndexVM.Accounts[0].UserRole)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountIndexVM.Accounts[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.AccountIndexVM.Accounts) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserRole)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-Username="@item.Username">Chỉnh sửa</a> |
+                <a asp-page="./Details" asp-route-Username="@item.Username">Chi tiết</a> |
+                <a style="color:red" asp-page="./Delete" asp-route-Username="@item.Username">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+    var preDisable = Model.AccountIndexVM.Accounts.HasPrevious ? "" : "disabled";
+    var nextDisable = Model.AccountIndexVM.Accounts.HasNext ? "" : "disabled";
+
+
+<div class="container">
+    <a  class="btn btn-default @preDisable" 
+        asp-route-pageIndex="@(Model.AccountIndexVM.Accounts.PageIndex - 1)">Trước</a>
+
+    <a  class="btn btn-default @nextDisable"
+        asp-route-pageIndex="@(Model.AccountIndexVM.Accounts.PageIndex + 1)">Tiếp</a>
+</div>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}

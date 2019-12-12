@@ -1,0 +1,70 @@
+@page
+@model GoCafe.Pages.Categorys.IndexCategory
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Quản lý thực đơn</h1>
+
+<p>
+    <a asp-page="./Create">Thêm mới</a>
+</p>
+
+<form>
+    <p>
+        Tên: 
+        <input type="text" name="searchString" value="@ViewData["searchString"]"/>
+        <input type="hidden" asp-route-pageIndex="@(Model.CategoryIndexVM.Categorys.PageIndex - 1)">
+        <input type="submit" value="Tìm kiếm"/>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryIndexVM.Categorys[0].CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryIndexVM.Categorys[0].CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CategoryIndexVM.Categorys) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CategoryId">Chỉnh sửa</a> |
+                <a style="color:red" asp-page="./Delete" asp-route-id="@item.CategoryId">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+    var preDisable = Model.CategoryIndexVM.Categorys.HasPrevious ? "" : "disabled";
+    var nextDisable = Model.CategoryIndexVM.Categorys.HasNext ? "" : "disabled";
+
+
+<div class="container">
+    <a  class="btn btn-default @preDisable" 
+        asp-route-pageIndex="@(Model.CategoryIndexVM.Categorys.PageIndex - 1)">
+        Trước</a>
+
+    <a  class="btn btn-default @nextDisable"
+        asp-route-pageIndex="@(Model.CategoryIndexVM.Categorys.PageIndex + 1)">Tiếp</a>
+</div>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}

@@ -1,0 +1,91 @@
+@page
+@model GoCafe.Pages.Order.IndexOrder
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Đặt món";
+    Layout = "_Layout1";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+{
+<h1>Đặt món</h1>
+
+<form>
+    <p>
+        Thể loại: 
+        <select asp-for="categoryGenre" asp-items="Model.ProductIndexVm.Genres1">
+            <option value="">All</option>
+        </select>
+        Tên: 
+        <input type="text" name="searchString" value="@ViewData["searchString"]"/>
+        <input type="submit" value="Tìm kiếm"/>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductIndexVm.Products[0].ProductName)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.ProductIndexVm.Products[0].CategoryDto.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductIndexVm.Products[0].Price)
+            </th>
+            <th>
+                Số lượng: 
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ProductIndexVm.Products) {
+    <form method="post">
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            @foreach (var cate in Model.CategoryIndexVm.Categorys)
+            {
+                if(item.CategoryId == cate.CategoryId)
+                {<td>
+                    @Html.DisplayFor(modelItem => cate.CategoryName)
+                </td>
+                }
+            }
+             
+            <td>
+                @Html.DisplayFor(modelItem => item.Price) VNĐ
+            </td>
+
+            <td>
+                <input type="hidden" asp-for="@item.Id"/>
+                <input type="number" name="SL" min="0" style="width:50px" value="0"/>
+            </td>
+            <td>
+                <input type="submit" value="Cập nhật" class="btn btn-primary">
+            </td>
+        </tr>
+    </form>
+}
+    </tbody>
+</table>
+
+    var preDisable = Model.ProductIndexVm.Products.HasPrevious ? "" : "disabled";
+    var nextDisable = Model.ProductIndexVm.Products.HasNext ? "" : "disabled";
+
+
+<div class="container">
+    <a  class="btn btn-default @preDisable" 
+        asp-route-pageIndex="@(Model.ProductIndexVm.Products.PageIndex - 1)">Trước</a>
+
+    <a  class="btn btn-default @nextDisable"
+        asp-route-pageIndex="@(Model.ProductIndexVm.Products.PageIndex + 1)">Tiếp</a>
+</div>
+<a asp-page="Payment" class="btn btn-primary" >Thanh toán</a>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}

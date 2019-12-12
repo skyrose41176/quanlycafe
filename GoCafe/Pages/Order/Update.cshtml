@@ -1,0 +1,95 @@
+@page
+@model GoCafe.Pages.Order.HoadonModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Thanh toán";
+    Layout = "_Layout1";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+{
+    <h1>Thanh toán</h1>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tên</th>
+            <th scope="col">SL</th>
+            <th scope="col">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int dem = 0;
+            }
+            @foreach (var item in Model.Products)
+            {
+                dem++;
+                <tr>
+                    <td scope="row">@dem</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    @foreach(var i in Model.objOrders)
+                    {
+                        int tmp = Convert.ToInt32(i.id);
+                        if (tmp == item.Id)
+                        {
+                            <td>
+                                @Html.DisplayFor(Model => i.SL)
+                            </td>
+                        }
+                    }
+
+                    @foreach(var i in Model.objOrders)
+                    {
+                        int tmp = Convert.ToInt32(i.id);
+                        if (tmp == item.Id)
+                        {
+                            float gia_pr = item.Price*i.SL;
+                            <td>
+                                @gia_pr VNĐ
+                            </td>
+                        }
+                    }
+                </tr>
+                
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <th>Tổng cộng</th>
+                @{
+                    float gia = 0;
+                }
+                @foreach (var item in Model.Products)
+                {
+                    @foreach(var i in Model.objOrders)
+                    {
+                        int tmp = Convert.ToInt32(i.id);
+                        if (tmp == item.Id)
+                        {
+                            gia += item.Price*i.SL;
+                        }
+                    }
+                }
+                <td>
+                    @gia VNĐ
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>
+                    
+                    <form method="post">
+                        <input type="submit" value="Tính Tiền" class="btn btn-success"/>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+</table>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}

@@ -1,0 +1,78 @@
+@page
+@model GoCafe.Pages.Home.IndexHome
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+@if(HttpContext.Session.GetString("Username") != null)
+{
+    if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+    {
+        Layout = "_Layout1";
+    }
+    else if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+    {
+        Layout = "_Layout";
+    }
+    <table class="table table-bordered">
+        <tr>
+            <td colspan="2" align="center">
+                <h1>Quản lý GoCafe</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tên tài khoản
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Account.Fullname)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Tên người dùng
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Account.Username)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Quyền
+            </td>
+            <td>
+                 @Html.DisplayFor(model => model.Account.UserRole)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Số điện thoại
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Account.Phone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ngày sinh
+            </td>
+            <td>
+               @Html.DisplayFor(model => model.Account.Dateofbirth)
+            </td>
+        </tr>
+         <tr>
+            <td>
+                Trạng thái
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Account.Status)
+            </td>
+        </tr>
+
+    </table>
+}
+else
+{
+    Layout=null;
+    <h1>bạn chưa đăng nhập</h1>
+}

@@ -1,0 +1,68 @@
+@page
+@model GoCafe.Pages.Bills.BillModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Thông tin";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+{
+    Layout="_Layout1";
+<h1>Thông tin</h1>
+
+<div>
+    <h4>Chi tiết hóa đơn</h4>
+    <hr />
+    <dl class="row">
+        <table class="table table-script">
+            <tr>
+                <th>Tên món</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+            </tr>
+            @foreach (var item in Model.InfoBillIndexVM.InfoBills) {
+            <tr>
+                @foreach(var pro in Model.ProductIndexVM.Products)
+                {
+                    if(item.IdProduct == pro.Id)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => pro.ProductName)
+                        </td>
+                    }
+                }   
+            <td>
+                @Html.DisplayFor(modelItem => item.SL)
+            </td>
+                @foreach(var pro in Model.ProductIndexVM.Products)
+                {
+                    if(item.IdProduct == pro.Id)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => pro.Price) VNĐ
+                        </td>
+                    }
+                }  
+            <td>
+                @Html.DisplayFor(modelItem => item.Price) VNĐ
+            </td>
+            </tr>
+            }
+            <tr>
+                <td colspan="2"></td>
+                <th>Tổng tiền</th>
+                <td>@Html.DisplayFor(model => model.InfoBillIndexVM.Genres) VNĐ
+                </td>
+            </tr>
+        </table>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Index">Trở lại danh sách</a>
+</div>
+}
+else
+{
+    Layout=null;
+    <h1>Bạn không đủ điều kiện để truy cập</h1>
+}

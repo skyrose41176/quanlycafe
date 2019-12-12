@@ -1,0 +1,59 @@
+@page
+@model GoCafe.Pages.Accounts.DeleteModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Xoá";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Xoá</h1>
+
+<h3>Bạn chắc chắn muốn làm điều này không? </h3>
+<div>
+    <h4>Tài Khoản</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Fullname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Fullname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Dateofbirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Dateofbirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.UserRole)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.UserRole)
+        </dd>
+    </dl> 
+    
+    <form method="post">
+        <input type="hidden" asp-for="Account.Username" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Trở lại danh sách</a>
+    </form>
+</div>
+}
+else
+{
+    Layout=null;
+    <h1>Bạn không đủ điều kiện để truy cập</h1>
+}

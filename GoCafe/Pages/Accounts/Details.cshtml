@@ -1,0 +1,56 @@
+@page
+@model GoCafe.Pages.Accounts.DetailsModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Thông tin";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Thông tin</h1>
+
+<div>
+    <h4>Tài khoản</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Fullname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Fullname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Dateofbirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Dateofbirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.UserRole)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.UserRole)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-Username="@Model.Account.Username">Chỉnh sửa</a> |
+    <a asp-page="./Index">Trở lại danh sách</a>
+</div>
+}
+else
+{
+    Layout=null;
+    <h1>Bạn không đủ điều kiện để truy cập</h1>
+}

@@ -1,0 +1,8 @@
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\bin\Debug\netstandard2.0\ApplicationCore.deps.json
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\bin\Debug\netstandard2.0\ApplicationCore.dll
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\bin\Debug\netstandard2.0\ApplicationCore.pdb
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.csprojAssemblyReference.cache
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.AssemblyInfo.cs
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.dll
+C:\Users\Admin\Desktop\QuanLy\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.pdb

@@ -1,0 +1,130 @@
+@page
+@model GoCafe.Pages.Order.PaymentModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Đặt món";
+    Layout = "_Layout1";
+    int flag=0;
+}
+@if(HttpContext.Session.GetString("UserRole")=="Nhân viên")
+{
+<h1>Đặt món</h1>
+@foreach (var t in Model.objOrders)
+{
+    @if(t.SL!=0){
+        flag=1;
+        break;
+    }
+}
+@if(flag==1)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].ProductName)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.CategoryIndexVM.Categorys[0].CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Price)
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Thành tiền
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+@foreach (var item in Model.Products) {
+    <form method="post">
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            @foreach (var cate in Model.CategoryIndexVM.Categorys)
+            {
+                if(item.CategoryId == cate.CategoryId)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => cate.CategoryName)
+                    </td>
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Price) VNĐ
+            </td>            
+            @foreach(var i in Model.objOrders)
+            {
+                int tmp = Convert.ToInt32(i.id);
+                if (tmp == item.Id)
+                {
+                    <td>
+                        @Html.DisplayFor(Model => i.SL)
+                    </td>
+                }
+            }
+
+            @foreach(var i in Model.objOrders)
+            {
+                int tmp = Convert.ToInt32(i.id);
+                if (tmp == item.Id)
+                {
+                    float gia_pr = item.Price*i.SL;
+                    <td>
+                        @gia_pr VNĐ
+                    </td>
+                }
+                
+            }
+            <td>
+                <input type="hidden" asp-for="@item.Id" value="@item.Id" />
+                <input type="submit" value="Xoá sản phẩm" class="btn btn-danger">
+            </td>
+        </tr>
+    </form>    
+}
+        <tr>
+            <td></td>
+            <td></td>
+            <th>Tổng cộng: </th>
+            @{
+                float gia = 0;
+            }
+            @foreach (var item in Model.Products)
+            {
+                @foreach(var i in Model.objOrders)
+                {
+                    int tmp = Convert.ToInt32(i.id);
+                    if (tmp == item.Id)
+                    {
+                        gia += item.Price*i.SL;
+                    }
+                }
+            } 
+            <td>
+                @gia VNĐ
+            </td>
+            <td>
+                <a asp-page="Update" class="btn btn-primary">Tiếp theo&rsaquo;&rsaquo;</a>
+            </td>
+            
+        </tr>
+    </tbody>
+</table>
+}
+else{
+    <h3>Không có sản phâm trong giỏ hàng</h3>
+}
+<a asp-page="/Order/Index" class="btn btn-dark">&lsaquo;&lsaquo;Trở lại</a>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}

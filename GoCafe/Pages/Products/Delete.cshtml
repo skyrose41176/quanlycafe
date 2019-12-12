@@ -1,0 +1,41 @@
+@page
+@model GoCafe.Pages.Products.DeleteModel
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Xoá";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Xoá</h1>
+
+<h3>Bạn chắc chắn muốn làm điều này không? </h3>
+<div>
+    <h4>Thực đơn</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.ProductName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Product.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.Price)
+        </dd>
+    </dl> 
+    
+    <form method="post">
+        <input type="hidden" asp-for="Product.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Trở lại danh sách</a>
+    </form>
+</div>
+}
+else
+{
+    Layout=null;
+    <h1>Bạn không đủ điều kiện để truy cập</h1>
+}

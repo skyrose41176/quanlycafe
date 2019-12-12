@@ -1,0 +1,80 @@
+@page
+@model GoCafe.Pages.Products.IndexProduct
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Quản lý nhân viên";
+}
+@if(HttpContext.Session.GetString("UserRole")=="Quản trị viên")
+{
+<h1>Quản lý thực đơn</h1>
+
+<p>
+    <a asp-page="./Create">Thêm mới</a>
+</p>
+
+<form>
+    <p>
+        Loại:
+        <select asp-for="ProductGenre" asp-items="Model.ProductIndexVM.Genres1">
+            <option value="">All</option>
+        </select>
+        Tên: 
+        <input type="text" name="searchString" value="@ViewData["searchString"]"/>
+        <input type="hidden" asp-route-pageIndex="@(Model.ProductIndexVM.Products.PageIndex - 1)">
+        <input type="submit" value="Tìm kiếm"/>
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductIndexVM.Products[0].ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductIndexVM.Products[0].CategoryDto.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ProductIndexVM.Products) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            @foreach (var cate in Model.CategoryIndexVM.Categorys)
+            {
+                if(item.CategoryId == cate.CategoryId){
+                    <td>
+                        @Html.DisplayFor(modelItem => cate.CategoryName)
+                    </td>
+                }
+            }
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a style="color:red" asp-page="./Delete" asp-route-id="@item.Id">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+    var preDisable = Model.ProductIndexVM.Products.HasPrevious ? "" : "disabled";
+    var nextDisable = Model.ProductIndexVM.Products.HasNext ? "" : "disabled";
+
+
+<div class="container">
+    <a  class="btn btn-default @preDisable" 
+        asp-route-pageIndex="@(Model.ProductIndexVM.Products.PageIndex - 1)">
+        Trước</a>
+
+    <a  class="btn btn-default @nextDisable"
+        asp-route-pageIndex="@(Model.ProductIndexVM.Products.PageIndex + 1)">Tiếp</a>
+</div>
+}
+else
+{
+    Layout = null;
+    <h1>Bạn không đủ yêu cầu</h1>
+}
